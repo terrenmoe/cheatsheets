@@ -1,0 +1,325 @@
+#!/bin/bash
+# bash_cheat
+# A script for cheating w/ bash
+
+cat <<- eol
+##########################################
+             BASH SCRIPTING
+##########################################
+
+Invoke:   bash [options] file
+Shebang:  #!/usr/bin/env bash
+          #!/bin/bash
+
+Metacharacter
+  A character that, when unquoted, separates words.
+  One of the following:
+    |  & ; ( ) < > space tab
+Control operator
+  A token that performs a control function.
+  One of the following:
+    || & && ; ;; ( ) | |& <newline>
+
+##########################################
+             LOOPS
+##########################################
+
+For:
+
+  for i in <list>; do echo \$i; done
+
+  <list>:
+    FileSpec:  *.txt # Lines
+    Set:       1 2 3 4 5
+    Range:     {start..end} {1..5} {start..end..inc}
+    Var:       \$words "w1 w2 w3"
+    Args:      \$*
+    Cmd:       \`cmd args\`
+
+Each Positional parameter set per iteration:
+  for pparams; do echo \$pparams; done
+
+Spliting an array over lines by \\ ESCing:
+  countries=(
+    Netherlands Ukraine Zaire Turkey \\
+    Russia Yemen Syria Brazil Argentina \\
+    Nicaragua Japan Mexico Venezuela \\
+    Greece England \\
+  )
+  element_count=\${#countries[@]}
+  let "comparisons = \$element_count - 1"
+
+  for (( last = \$element_count - 1; last > 0; last-- )); do
+    for (( i = 0; i < last; i++ )); do
+      [[ "\${countries[\$i]}" > "\${countries[\$((i+1))]}" ]] \
+      && exchange \$i \$((i+1))
+    done
+  done
+
+  for (( exp1; exp2; exp3 ))
+
+  for (( i=1; i<=5; i++ )); do echo \$i; done
+
+  for i in Red Green Yellow Blue Purple Cyan Orange; do
+    echo "\$i"
+  done
+
+  for ((i=1, j=1; i<=50; j=j+i, i=j-i))
+  do
+   echo \$i
+  done
+
+  for (( ; ; ))  Infinite!
+
+While:
+
+  while [ test ]; do
+    cmds
+  done
+
+  while (( \$# > 0 ))  # or [ \$# -gt 0 ]
+  do
+    echo "\$1"
+    shift
+  done
+
+      # ↓ = true
+  while : ; do cmds; done
+
+Until:
+
+  until [ test ]; do
+    cmds
+  done
+
+Exit loop:  break
+Next:       continue
+
+##########################################
+             CONDITIONAL
+##########################################
+
+Syntax:
+  if [[ tests ]]
+  then
+    <cmds>;
+  elif [[ tests ]]; then
+    <cmds>;
+  else
+    <cmds>;
+  fi
+
+1 Line: [ test ] && ( cmds )
+Unless: [ test ] || ( cmds )
+
+Case:
+  case value in "\$var"
+    pattern) cmds ;;
+      *) cmds ;;  # else
+  esac
+
+See "Patterns" and "Test cmd"
+
+##########################################
+             FILE PROCESSING
+##########################################
+
+Interactive:             # To ↓ From STDIN
+  Read STDIN:   while read varname; do
+Predefined:
+  Filename:     while read filevar; do
+                  # loops ↘ lines ↖ set to
+                done < \$filename
+
+  Slurp:        varname=\`cat \$filename\`
+    Or          varname=\$(cat \$filename)
+  Slurp                         # ↘ print & assign ↙
+    &           varname=\`cat \$f | tee >(cat >&2) | wc -l\`
+  Print
+
+  ReplaceFile:  echo \$data >\$file
+  Truncate:     echo -n "" >\$file
+    Or:         truncate -s 0 \$file
+    Or:         : >\$file
+  WriteAppend:  echo \$line >>\$file
+  NoClobSet?:   echo \$line >|\$file
+
+  Redirection:
+    STDIN:      </dev/null
+    STDOUT:     >/dev/null
+    STDERR:     2< 2>/dev/null
+    All:        </dev/null >/dev/null 2>&1
+##########################################
+             TEST CMD
+##########################################
+
+Test:      test expression
+            #  Both Spaces
+            #+ ↓ Required ↓
+  In script:  [ expression ]
+  Alternate: [[ expression ]]
+             Does not split string words
+             Does not expand pathglobs*
+              Accepts extra
+Expressions:  ↓↓   Space  ↓↓
+  True:      [  expression  ]
+  False:     [ ! expression ]      # Logical primitive: Not
+  Value:     [ (expression) ]
+  And:       [ exp1 ] && [ exp2 ]  # W/ Short
+  Or:        [ exp1 ] || [ exp2 ]  #+ Circuit
+  And:       [ exp1 -a exp2 ]      # W/o Short
+  Or:        [ exp1 -o exp2 ]      #+ Circuit
+  Regex:     [[ value =~ regex ]]  # W/o quotes: ^asIn.*\$
+                                   #+ or as var: \$regex
+Comparisons:
+String:
+  Operators:   ==  =  !=  <  >
+               str1 Operator str2
+  W/ quotes   'str1' Operator 'str2'
+  Alt w/ var "\$str1" Operator "\$str2"
+  Pattern:    [[ 'str1' == str* ]]
+  Empty:       -z string  is Zero-length?
+  Not Empty:   -n string  is Non-zero
+
+Numerical:          1 Operator 2
+  Alt w/ var "\$num1" Operator "\$num2"
+   Operators: -eq -ne -lt -le -gt -ge
+
+File:
+  Type:                     -[bcdfhLpSt]
+    Is Block Special device:   -b file
+    Is Char Special device:    -c file
+    Is Dir:                    -d file
+    Is File:                   -f file
+    Is Symlink:          -h || -L file  # Only test w/o deref of Symlinks
+    Is fifo                    -p file
+    Is Socket:                 -S file
+    Is FD w/ tty:              -t FD    # ex. STD*
+  Permission:               -[gkruwxOG]
+    Set-group-ID bit set       -g file
+    Sticky bit set             -k file
+    Read                       -r file
+    Set-user-ID bit set.       -u file
+    Write                      -w file
+    Exec or search if dir      -x file
+    Owned by effective usr ID  -O file
+    Owned by effective grp ID  -G file
+  Characteristic             -e -s -nt -ot -ef
+    Exists:                    -e file
+    Is Size -gt 0:             -s file
+    Newer mtime          file1 -nt file2  # true if file1 exists and not file2
+    Older mtime          file1 -ot file2  # true if file2 exists and not file1
+    Device, inode n      file1 -ef file2  # equal files? hard links of each other
+
+Depending on the expansion of params
+test connects can be ambiguous. Ex:
+  When \$1 is set to '!' and \$2 to the null string '':
+      test "\$1" -a "\$2"
+  and should be written as:
+      test "\$1" && test "\$2"
+Shell logical primitives also short circuit.
+Positive for file attr tests
+
+##########################################
+PATTERNS & FILE GLOBS & REGULAR EXPRESSION
+##########################################
+
+Pattern: (not extended regex)
+  Any:      *
+  Start:    start*
+  End:      *end
+  Single:   ?
+  Special:  \x
+  Brackets: [...]
+    Set:    [chars]
+    Range:  [char-char]
+    Class:  [[:class:]]
+    Not in: [^chars]
+  Alternate:(exp|exp)
+
+Extended regex: (used by grep or [[ =~ ]])
+  Char:     [chars]
+  Range:    [char-char]
+  Single:   .
+  Repeat:   * + ? {n} {,n} {n,m}
+  Anchors   ^ \$
+  Escape:   \char
+  Alternate:(exp|exp)
+
+##########################################
+             TEXT MANIPULATION
+##########################################
+
+Length:         \${#var}
+Substring:      \${var:start:len}   first=0
+                \${var:start}       to end
+
+Default:        \${var-default} \${var:-default}
+  Can be:         literal, \$var, \`cmd\`
+Set to Default: \${var=default}
+  Like:           var = \${var-default}
+Alternative:    \${var+alt_value}
+  Like:           \$var ? alt_value : ""
+Die:            \${var?errmsg}
+  Like:           die errmsg unless \$var
+
+Strip Lead:     \${var#Pattern}    shortest
+                \${var##Pattern}   longest
+String End:     \${var%Pattern}    shortest
+                \${var%%Pattern}   longest
+
+Replace:        \${var/Pattern/Replace}
+  Global:       \${var//Pattern/Replace}
+  Prefix:       \${var/#Pattern/Replace}
+  Suffix:       \${var/%Pattern/Replace}
+Alphabetic case change
+  1st/every char to upp: \${var^} | \${var^^}
+  Alternate of ↑         \${var~} | \${var~~}
+  1st/every char to low: \${var,} | \${var,,}
+
+Variable globbing, returns matching varnames
+  Prefix:    \${!varprefix*} \${!varprefix@}
+  Ex:        for var in \${!namespace*};
+
+##########################################
+          HISTORY SUBSTITUTION
+##########################################
+
+The ! history cmd shows pairs of:
+  event_designator, cmd_entry
+
+Event Designators:
+  !N: sub cmd associated w/ event designator N
+  !-N: sub Nth recent cmd; Ex. !-1 subs most recent cmd.
+  !! is alias for !-1, to quick sub most recent cmd
+  !str subs most recent cmd that begins w/ str
+  !?str? subs most recent cmd that includes str
+
+Word Designators
+  These can be added on to a ! cmd
+  Colons separate the event and word designators
+  !! can be abbr'ed when using word designator
+  Ex. !!:0 = !:0
+
+  !:0 will get the cmd that was last executed
+  !:N will get the Nth arg
+  !:2-3 will get the second thru third args
+  !:^ is another way to get the first arg.
+  !:\$ will get the last arg.
+  !:* will get all args (but not the cmd)
+
+Modifiers
+  Colon sep'ed modifiers may be appended to ! cmds
+  Any number can be stacked (e.g. !:t:r:p).
+
+  p --
+  q -- Hard quote sub
+  h -- Line up to the base filename
+  t -- Only the base filename
+  r -- Line up to the filename extension
+  e -- Only the filename extension
+  s/search/replace -- Replace the first of search w/ replace
+  gs/search/replace -- Replace each of search w/ replace
+
+eol
+exit 0

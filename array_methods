@@ -1,0 +1,54 @@
+Array Methods
+
+The Array Built-in is a global object that is used in the
+construction of array instances; which are high-level, list-like objects.
+
+Array instances are regular objects for which there is a particular
+relationship between integer-key-ed props and the 'length'
+prop. Array instances inherit from Array.prototype which
+provide them methods to manipulate arrays. These manipulations
+are typically to themselves or some representation of themselves.
+
+
+The following sections include lists of prototype methods from Array Built-in
+
+Accessor methods Section
+
+These methods do not modify the array and return some representation of the array.
+
+Array.prototype
+.concat() Returns a new array that is this array joined with other array(s) and/or value(s).
+.includes() Determines whether an array contains a certain element, returning true or false as appropriate.
+.indexOf() Returns the first (least) index of an element within the array equal to the specified value, or -1 if none is found.
+.join() Joins all elements of an array into a string.
+.lastIndexOf() Returns the last (greatest) index of an element within the array equal to the specified value, or -1 if none is found.
+.slice() Extracts a section of an array and returns a new array.
+.toSource() Returns an array literal representing the specified array; you can use this value to create a new array. Overrides the Object.prototype.toSource() method.
+.toString() Returns a string representing the array and its elements. Overrides the Object.prototype.toString() method.
+.toLocaleString() Returns a localized string representing the array and its elements. Overrides the Object.prototype.toLocaleString() method.
+
+Iteration methods Section
+
+Several methods take, as arguments, "callback" functions to be called back
+while processing the array.
+When these methods are called, an initial length of the array is
+sampled, and changes to length will not change the sampled value and therefore
+the scheduled callback calls.
+Changes to key:value pairs still in the scheduled callbacks from within
+the callback causes the callback to lose any pure or idempotent status.
+If you must mutate the array, copy into a new array instead.
+
+Array.prototype
+.entries() Returns a new Array Iterator object that contains the key/value pairs for each index in the array.
+.every() Returns true if every element in this array satisfies the provided testing function.
+.filter() Creates a new array with all of the elements of this array for which the provided filtering function returns true.
+.find() Returns the found value in the array, if an element in the array satisfies the provided testing function or undefined if not found.
+.findIndex() Returns the found index in the array, if an element in the array satisfies the provided testing function or -1 if not found.
+.forEach() Calls a function for each element in the array.
+.keys() Returns a new Array Iterator that contains the keys for each index in the array.
+.map() Creates a new array with the results of calling a provided function on every element in this array.
+.reduce() Apply a function against an accumulator and each value of the array (from left-to-right) as to reduce it to a single value.
+.reduceRight() Apply a function against an accumulator and each value of the array (from right-to-left) as to reduce it to a single value.
+.some() Returns true if at least one element in this array satisfies the provided testing function.
+.values() Returns a new Array Iterator object that contains the values for each index in the array.
+[@@iterator]() Returns a new Array Iterator object that contains the values for each index in the array.

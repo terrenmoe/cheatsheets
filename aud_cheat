@@ -1,0 +1,171 @@
+#!/bin/bash -x
+# aud_cheat
+#+ A script for displaying a cheatsheet for audacity
+declare selection
+declare aflag
+declare cflag
+declare eflag
+declare vflag
+declare -xg
+
+error() {
+  local e_MSG=$1
+  echo "${e_MSG}" && exit 1
+}
+
+while getopts 'ace:v' flag; do
+  case "${flag}" in
+    a) aflag='true';echo ${aflag} ;;
+    c) cflag='true';echo ${cflag} ;;
+    e) eflag="${OPTARG}";echo ${eflag} ;;
+    v) vflag='true';echo ${vflag} ;;
+    *) error "Unexpected option ${flag}" ;;
+  esac
+done
+
+help() {
+  cat << eol
+  Usage: "$(basename $0)" -[vace]
+eol
+}
+
+press_enter() {
+    echo -en "
+Press Enter to continue"
+    read
+    clear
+}
+press_enter
+topics() {
+  cat << eol
+    1 - spectrogram
+    2 - decibel
+    3 - display
+    4 - display
+    5 - display
+    6 - display
+    7 - display
+    8 - display
+    9 - display
+    0 - exit program
+
+eol
+}
+
+use_case() {
+  echo -n "Enter selection: "
+  read selection
+  echo ""
+  case $selection in
+    1 ) spectrogram; press_enter ;;
+    2 ) decibel; press_enter ;;
+    3 ) echo; press_enter ;;
+    4 ) echo; press_enter ;;
+    5 ) echo; press_enter ;;
+    6 ) echo; press_enter ;;
+    7 ) echo; press_enter ;;
+    8 ) echo; press_enter ;;
+    9 ) echo; press_enter ;;
+    0 ) exit ;;
+    * ) echo "Please enter 0-9"; press_enter
+  esac
+}
+
+main() {
+  until [ "$selection" = "0" ]; do
+    echo "right_now = $(date +"%x %r %Z")"
+    topics
+    use_case
+  done
+}
+
+spectrogram() {
+  cat << eol
+To demonstrate how the various settings affect the appearance of an audio
+track in spectrogram view, start with an artificially constructed test
+track. It should consist of 10 segments of a sine wave tone at 2000 Hz,
+each 2 seconds long. The level of each segment in dB should be indicated
+by labels below the audio track.
+
+Observe how the track appears in waveform dB view.
+Observe how the track appears in spectrogram view,
+using the default settings:
+
+    Window size: 1024
+    Window type: Hanning
+    Zero padding factor: 1
+    Minimum frequency (Hz): 0
+    Maximum frequency (Hz): 8000
+    Gain (dB): 20
+    Range (dB): 80
+    Frequency Gain (dB/dec): 0.
+
+Gain can be said to increase the "brightness". Ex: With the setting of 20
+dB, any frequency(Hz) band that had (before gain amplification) a level of
+-20 dB or greater (and now, after amplification has a level greater than 0
+dB) will be displayed as white. Similarly the "lower" level bands will also
+"get brighter".
+
+There are six color bands in spectrogram view: white, red, magenta, dark
+blue, light blue and gray. The Range setting determines the spacing between
+colors.
+
+With the default settings of Gain = 20 dB and Range = 80 dB, the colors
+correspond to the following levels:
+
+  any above -20 dB:
+    indistinguishably white
+  from -40 dB to -20 dB:
+    transition from red to white
+  from -60 dB to -40 dB:
+    transition from magenta to red
+  from -80 dB to -60 dB:
+    transition from dark blue to magenta
+  from -100dB to -80 dB:
+    transition from light blue to dark blue
+  any below -100dB:
+    transition from gray to light blue
+eol
+}
+
+decibel() {
+  cat << eol
+The decibel(dB) is a unit of measurement to express the ratio of one value
+of a power or field quantity to another on a logarithmic scale, the
+logarithmic quantity being called the power level or field level,
+respectively.
+
+Depending on the nature of the quantities, differing scales may express
+a ratio in decibels:
+
+  power
+  field(root-power)
+
+To express a power ratio:
+
+  The number of decibels is 10 times its logarithm to base 10. For example:
+    A change in power by a factor of 10 corresponds to a 10 dB change in level.
+
+To express field(root-power) quantities:
+
+  The number of decibels is 20 times its logarithm to base 10. For example:
+    A change in amplitude by a factor of 10 corresponds to a 20 dB change in level.
+
+This difference in scale by factor of two allows the related power and field
+levels to change by the same number of decibels.
+
+In linear systems, these definitions allow the distinction between
+root-power quantities and power quantities to be ignored when specifying
+changes as levels:
+
+  An amp can be said to have a "3 dB" gain w/o specifying whether voltage
+  or power are being compared; for a given linear load  (e.g. an 8 Ω
+  speaker), such an increase will result in a 3 dB increase in both the
+  sound pressure level and the sound power level at a given location near
+  the speaker.
+
+eol
+}
+
+main
+exit 0

@@ -1,0 +1,147 @@
+CONDA 4.6 CHEAT SHEET
+
+For full docs of any cmd, add --help to the cmd. EX: conda create --help
+
+Verify Conda is installed, check version number
+
+conda info
+
+Update Conda to the current version
+
+conda update -n base conda
+
+Update pkgs to stable and compatible ver of Anaconda, not very latest.
+
+conda update anaconda
+
+Create a new env named ENVNAME w/ specific ver of Python and pkgs installed.
+
+conda create --name ENVNAME python=3.6
+"PKG1>7.6" PKG2
+
+Activate a named Conda environment
+
+conda activate ENVNAME
+
+Activate a Conda environment at a particular location on disk
+
+conda activate /path/to/environment-dir
+
+Deactivate current environment
+
+conda deactivate
+
+List all packages and versions in the active environment
+
+conda list
+
+List all packages and versions in a named environment
+
+conda list --name ENVNAME
+
+List all revisions made within the active environment
+
+conda list --revisions
+
+List all revisions made in a specified environment
+
+conda list --name ENVNAME --revisions
+
+Restore an environment to a previous revision
+
+conda install --name ENVNAME --revision
+REV_NUMBER
+
+Delete an entire environment
+
+conda remove --name ENVNAME --all
+
+TIP: Anaconda Navigator is a desktop graphical user interface to manage packages
+and environments with Conda. With Navigator you do not need to use a terminal to
+run Conda commands, Jupyter Notebooks, JupyterLab, Spyder, and other tools.
+Navigator is installed with Anaconda, and may be added with Miniconda.
+
+Make an exact copy of an env
+
+conda create --clone ENVNAME --name NEWENV
+
+Export an env to a YAML file that can be read on Windows, macOS, and Linux
+
+conda env export --name ENVNAME > envname.yml
+
+Create an environment from YAML file
+
+conda env create --file envname.yml
+
+Create an env from the file named environment.yml in the current dir
+
+conda env create
+
+Export an environment with exact package versions for one OS
+
+conda list --explicit > pkgs.txt
+
+Create an environment based on exact package versions
+
+conda create --name NEWENV --file pkgs.txt
+
+Using Packages and channels
+
+Search for package in current configured channels w/ ver rng >=3.1.0, <3.2"
+
+conda search PKGNAME=3.1 "PKGNAME
+[version='>=3.1.0,<3.2']"
+
+Find a package on all channels using the Anaconda Client
+
+anaconda search FUZZYNAME
+
+Install package from a specific channel
+
+conda install conda-forge::PKGNAME
+
+Install a package by exact version number (3.1.4)
+
+conda install PKGNAME==3.1.4
+
+Install one of the listed versions (OR)
+
+conda install "PKGNAME[version='3.1.2|3.1.4']"
+
+Install following several constraints (AND)
+
+conda install "PKGNAME>2.5,<3.2"
+
+Add a channel to your Conda configuration
+
+conda config --add channels CHANNELNAME
+
+Additional Useful information about package versions
+
+conda search PKGNAME --info
+
+Remove unused cached files including unused packages
+
+conda clean --all
+
+Remove a package from an environment
+
+conda uninstall PKGNAME --name ENVNAME
+
+Update all packages within an environment
+
+conda update --all --name ENVNAME
+
+Run most commands without requiring a user prompt. Useful for scripts.
+
+conda install --yes PKG1 PKG2
+
+Examine Conda configuration and configuration services
+
+conda config --show
+conda config --show-sources
+
+Online Documentation
+https://conda.io
+
+

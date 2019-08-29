@@ -1,0 +1,31 @@
+C:Other|L:Letter|M:Mark|N:Number|P:Punctuation|S:Symbol|Z:Separator
+Cc    Control
+Cf    Format
+Cn    Unassigned
+Co    Private use
+Cs    Surrogate
+Ll    Lower case letter
+Lm    Modifier letter
+Lo    Other letter
+Lt    Title case letter
+Lu    Upper case letter
+Mc    Spacing mark
+Me    Enclosing mark
+Mn    Non-spacing mark
+Nd    Decimal number
+Nl    Letter number
+No    Other number
+Pc    Connector punctuation
+Pd    Dash punctuation
+Pe    Close punctuation
+Pf    Final punctuation
+Pi    Initial punctuation
+Po    Other punctuation
+Ps    Open punctuation
+Sc    Currency symbol
+Sk    Modifier symbol
+Sm    Mathematical symbol
+So    Other symbol
+Zl    Line separator
+Zp    Paragraph separator
+Zs    Space separator

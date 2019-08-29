@@ -1,0 +1,17 @@
+
+Image Settings:
+  -monitor             monitor progress
+  -quiet               suppress all warning messages
+  -regard-warnings     pay attention to warning messages
+  -seed value          seed a new sequence of pseudo-random numbers
+  -verbose             print detailed information about the image
+Miscellaneous Options:
+  -debug events        display copious debugging information
+  -help                print program options
+  -log format          format of debugging information
+  -list type           print a list of supported option arguments
+  -version             print version information
+In additiion, define any key value pairs required by your script.  For example,
+
+  conjure -size 100x100 -color blue -foo bar script.msl
+  conjure -dimensions 400x400 msl:incantation.msl
